@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h3 class="mb-4">Detalle de Cita</h3>
+
+<div class="card shadow-sm">
+<div class="card-body">
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+<label class="fw-bold">Paciente</label>
+<div>{{ cita.paciente }}</div>
+</div>
+
+<div class="col-md-6 mb-3">
+<label class="fw-bold">Doctor</label>
+<div>{{ cita.doctor }}</div>
+</div>
+
+<div class="col-md-6 mb-3">
+<label class="fw-bold">Fecha</label>
+<div>{{ cita.fecha }}</div>
+</div>
+
+<div class="col-md-6 mb-3">
+<label class="fw-bold">Hora</label>
+<div>{{ cita.hora }}</div>
+</div>
+
+<div class="col-12 mb-3">
+<label class="fw-bold">Motivo</label>
+<div>{{ cita.motivo }}</div>
+</div>
+
+<div class="col-md-6 mb-3">
+<label class="fw-bold">Estado</label>
+<div>{{ cita.estado }}</div>
+</div>
+
+</div>
+
+<hr>
+
+<div class="d-flex gap-2">
+
+<a href="/citas/editar/{{ cita.id }}/"
+class="btn btn-warning">
+Editar
+</a>
+
+<button
+class="btn btn-danger eliminar-btn"
+data-id="{{ cita.id }}">
+Eliminar
+</button>
+
+<a href="/citas/"
+class="btn btn-secondary">
+Volver
+</a>
+
+</div>
+
+</div>
+</div>
+
+<script>
+document.querySelector('.eliminar-btn').addEventListener('click', function(){
+
+const id = this.dataset.id;
+
+if(confirm("¿Eliminar cita?")){
+window.location.href = "/citas/eliminar/" + id + "/";
+}
+
+});
+</script>
+
+{% endblock %}

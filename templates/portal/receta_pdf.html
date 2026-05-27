@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<style>
+
+body{
+font-family:Arial;
+}
+
+.header{
+text-align:center;
+margin-bottom:20px;
+}
+
+.box{
+border:1px solid #ccc;
+padding:15px;
+margin-bottom:15px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+<h2>Clínica Médica</h2>
+<p>Receta / Información médica</p>
+</div>
+
+<div class="box">
+<h4>Datos del paciente</h4>
+
+<p>Nombre: {{ paciente.nombre }}</p>
+<p>Apellido: {{ paciente.apellido }}</p>
+</div>
+
+<div class="box">
+<h4>Última cita</h4>
+
+{% for c in citas %}
+<p>Fecha: {{ c.fecha }}</p>
+<p>Hora: {{ c.hora }}</p>
+<p>Doctor: {{ c.doctor }}</p>
+{% endfor %}
+
+</div>
+
+<div class="box">
+<h4>Resultado médico</h4>
+
+{% for r in resultados %}
+<p>Fecha: {{ r.fecha }}</p>
+<p>Doctor: {{ r.doctor }}</p>
+{% endfor %}
+
+</div>
+
+</body>
+</html>

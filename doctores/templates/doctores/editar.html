@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h4>Editar Doctor</h4>
+
+<div class="card p-4" style="max-width:600px;">
+
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-danger">
+      {{ message }}
+    </div>
+  {% endfor %}
+{% endif %}
+
+<form method="POST">
+{% csrf_token %}
+
+<div class="mb-3">
+<label>Nombre</label>
+<input   
+  type="text"   
+  name="nombre"   
+  class="form-control"  
+  value="{{doctor.nombre}}"  
+  pattern="[A-Za-zÁÉÍÓÚáéíóúñÑ ]+" 
+  title="Solo letras"
+  required>
+</div>
+
+<div class="mb-3">
+<label>Especialidad</label>
+<input   
+  type="text"   
+  name="especialidad"   
+  class="form-control"  
+  value="{{doctor.especialidad}}"  
+  pattern="[A-Za-zÁÉÍÓÚáéíóúñÑ ]+" 
+  title="Solo letras"
+  required>
+</div>
+
+<div class="mb-3">
+<label>Telefono</label>
+<input   
+  type="text"   
+  name="telefono"   
+  class="form-control"  
+  value="{{doctor.telefono}}"  
+  pattern="[0-9]+" 
+  title="Solo números">
+</div>
+
+<div class="mb-3">
+<label>Consultorio</label>
+<input   
+  type="text"   
+  name="consultorio"   
+  class="form-control"  
+  value="{{doctor.consultorio}}"  
+  pattern="[A-Za-z0-9]+" 
+  title="Ejemplo: A45">
+</div>
+
+<button class="btn btn-success">
+Actualizar
+</button>
+
+<a href="/doctores/" class="btn btn-secondary">
+Cancelar
+</a>
+
+</form>
+
+</div>
+
+{% endblock %}

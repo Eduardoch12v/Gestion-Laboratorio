@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h3 class="mb-4">Pacientes</h3>
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-success">{{ message }}</div>
+{% endfor %}
+{% endif %}
+
+<div class="card shadow-sm mb-4" style="max-width: 200px;">
+  <div class="card-body">
+    <h6 class="fw-bold">Total Pacientes</h6>
+    <h2 class="fw-bold">{{ total }}</h2>
+  </div>
+</div>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <form method="GET" class="d-flex gap-2">
+    <input
+      type="text"
+      name="buscar"
+      class="form-control"
+      placeholder="🔍 Buscar paciente..."
+      value="{{ request.GET.buscar }}"
+      style="max-width: 250px;">
+    <button type="submit" class="btn btn-outline-primary">Buscar</button>
+  </form>
+
+  <a href="/pacientes/nuevo/" class="btn btn-primary">
+    + Nuevo Paciente
+  </a>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <table class="table table-hover align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Fecha nacimiento</th>
+          <th>Telefono</th>
+          <th>Correo</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for p in pacientes %}
+        <tr>
+          <td>{{ p.nombre }}</td>
+          <td>{{ p.apellido }}</td>
+          <td>{{ p.fecha_nacimiento }}</td>
+          <td>{{ p.telefono }}</td>
+          <td>{{ p.correo }}</td>
+
+          <td>
+
+            <a href="/pacientes/ver/{{ p.id }}/"
+               class="btn btn-info btn-sm">
+               Ver
+            </a>
+
+            <a href="/pacientes/editar/{{ p.id }}/"
+               class="btn btn-warning btn-sm">
+               Editar
+            </a>
+
+            <button
+              type="button"
+              class="btn btn-danger btn-sm eliminar-btn"
+              data-id="{{ p.id }}"
+              data-nombre="{{ p.nombre }}">
+              Eliminar
+            </button>
+
+          </td>
+        </tr>
+
+        {% empty %}
+        <tr>
+          <td colspan="6" class="text-center">
+            No hay pacientes registrados
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+  </div>
+</div>
+
+<!-- Modal eliminar -->
+<div class="modal fade" id="modalEliminar" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <form method="POST" id="formEliminar">
+        {% csrf_token %}
+
+        <div class="modal-header">
+          <h5 class="modal-title">
+            Eliminar paciente
+          </h5>
+        </div>
+
+        <div class="modal-body">
+          ¿Seguro que deseas eliminar a
+          <strong id="nombrePaciente"></strong>?
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal">
+            Cancelar
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-danger">
+            Eliminar
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function(){
+
+  const modal = new bootstrap.Modal(
+    document.getElementById('modalEliminar')
+  )
+
+  document.querySelectorAll('.eliminar-btn').forEach(btn => {
+
+    btn.addEventListener('click', function(){
+
+      const id = this.dataset.id
+      const nombre = this.dataset.nombre
+
+      document.getElementById('nombrePaciente').textContent = nombre
+
+      document.getElementById('formEliminar').action =
+        "/pacientes/eliminar/" + id + "/"
+
+      modal.show()
+
+    })
+
+  })
+
+})
+
+</script>
+
+{% endblock %}

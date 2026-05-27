@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h3 class="mb-4">Resultados Médicos</h3>
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-success">{{ message }}</div>
+{% endfor %}
+{% endif %}
+
+<!-- Tarjeta de total -->
+<div class="card shadow-sm mb-4" style="max-width: 200px;">
+  <div class="card-body">
+    <h6 class="fw-bold">Total Resultados</h6>
+    <h2 class="fw-bold">{{ resultados|length }}</h2>
+  </div>
+</div>
+
+<!-- Buscador y botón nuevo -->
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <form method="GET" class="d-flex gap-2">
+    <input
+      type="text"
+      name="q"
+      class="form-control"
+      placeholder="🔍 Buscar paciente..."
+      value="{{ request.GET.q }}"
+      style="max-width: 250px;">
+    <button type="submit" class="btn btn-outline-primary">Buscar</button>
+  </form>
+
+  <a href="/resultados/nuevo/" class="btn btn-primary">
+    + Nuevo Resultado
+  </a>
+</div>
+
+<!-- Tabla -->
+<div class="card shadow-sm">
+  <div class="card-body">
+    <table class="table table-hover align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>Paciente</th>
+          <th>Doctor</th>
+          <th>Fecha</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for r in resultados %}
+        <tr>
+          <td>{{ r.paciente }}</td>
+          <td>{{ r.doctor }}</td>
+          <td>{{ r.fecha }}</td>
+
+          <td>
+            <span class="badge bg-success">Completado</span>
+          </td>
+
+          <td>
+            <!-- Ver -->
+            <a href="/resultados/ver/{{ r.id }}/"
+               class="btn btn-info btn-sm">
+              <i class="bi bi-eye"></i>
+            </a>
+
+            <!-- Editar -->
+            <a href="/resultados/editar/{{ r.id }}/"
+               class="btn btn-warning btn-sm">
+              <i class="bi bi-pencil"></i>
+            </a>
+
+            <!-- PDF -->
+            <a href="/resultados/pdf/{{ r.id }}/"
+               class="btn btn-secondary btn-sm">
+              <i class="bi bi-file-earmark-pdf"></i>
+            </a>
+
+            <!-- Eliminar -->
+            <button
+              class="btn btn-danger btn-sm eliminar-btn"
+              data-id="{{ r.id }}"
+              data-paciente="{{ r.paciente }}">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+
+        {% empty %}
+        <tr>
+          <td colspan="5" class="text-center">
+            No hay resultados registrados
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal eliminar -->
+<div class="modal fade" id="modalEliminar" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <form method="POST" id="formEliminar">
+        {% csrf_token %}
+
+        <div class="modal-header">
+          <h5 class="modal-title">Eliminar resultado</h5>
+        </div>
+
+        <div class="modal-body">
+          ¿Seguro que deseas eliminar el resultado de
+          <strong id="nombrePaciente"></strong>?
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal">
+            Cancelar
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-danger">
+            Eliminar
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.eliminar-btn').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+
+    var id      = this.dataset.id
+    var paciente = this.dataset.paciente
+
+    document.getElementById('nombrePaciente').textContent = paciente
+    document.getElementById('formEliminar').action = '/resultados/eliminar/' + id + '/'
+
+    var modal = new bootstrap.Modal(document.getElementById('modalEliminar'))
+    modal.show()
+
+  })
+})
+</script>
+
+{% endblock %}

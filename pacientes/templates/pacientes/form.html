@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="card p-4">
+<h4>Nuevo Paciente</h4>
+
+<form method="POST">
+{% csrf_token %}
+
+<div class="mb-3">
+<label>Nombre</label>
+<input type="text" name="nombre" class="form-control" required>
+</div>
+
+<div class="mb-3">
+<label>Apellido</label>
+<input type="text" name="apellido" class="form-control" required>
+</div>
+
+<div class="mb-3">
+<label>Fecha de nacimiento</label>
+<input type="date" name="fecha_nacimiento" class="form-control" required>
+</div>
+
+<div class="mb-3">
+<label>Telefono</label>
+<input type="text" name="telefono" class="form-control">
+</div>
+
+<div class="mb-3">
+<label>Correo</label>
+<input type="email" name="correo" class="form-control">
+</div>
+
+<button class="btn btn-success">
+Guardar Paciente
+</button>
+
+<a href="/pacientes/" class="btn btn-secondary">
+Cancelar
+</a>
+
+</form>
+
+</div>
+
+{% endblock %}

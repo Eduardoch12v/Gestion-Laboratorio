@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<style>
+
+body{
+font-family: Arial;
+margin:0;
+background:#f5f7fa;
+}
+
+.sidebar{
+width:220px;
+height:100vh;
+background:#1e73be;
+position:fixed;
+color:white;
+padding:20px;
+}
+
+.sidebar h2{
+margin-bottom:30px;
+}
+
+.sidebar a{
+display:block;
+color:white;
+padding:10px;
+text-decoration:none;
+border-radius:5px;
+margin-bottom:5px;
+}
+
+.sidebar a:hover{
+background:#155a96;
+}
+
+.content{
+margin-left:240px;
+padding:20px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:8px;
+box-shadow:0 2px 5px rgba(0,0,0,0.1);
+margin-bottom:20px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
+
+.btn{
+display:inline-block;
+padding:10px 20px;
+background:#1e73be;
+color:white;
+text-decoration:none;
+border-radius:5px;
+margin-top:10px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th,td{
+padding:10px;
+border-bottom:1px solid #ddd;
+text-align:left;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+<h2>Paciente</h2>
+
+<a href="/portal/">Mi panel</a>
+<a href="/portal/pdf/">Descargar PDF</a>
+<a href="/logout/">Cerrar sesión</a>
+
+</div>
+
+<div class="content">
+{% block content %}
+{% endblock %}
+</div>
+
+</body>
+</html>

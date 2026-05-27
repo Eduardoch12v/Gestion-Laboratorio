@@ -1,0 +1,72 @@
+<h2>Usuarios del sistema</h2>
+
+<a href="/administrador/crear/" class="btn btn-primary mb-3">
++ Nuevo Usuario
+</a>
+
+<table class="table table-bordered">
+
+<tr>
+<th>Usuario</th>
+<th>Email</th>
+<th>Rol</th>
+<th>Activo</th>
+<th>Acciones</th>
+</tr>
+
+{% for u in usuarios %}
+<tr>
+
+<td>{{ u.username }}</td>
+
+<td>{{ u.email }}</td>
+
+<td>
+{% for g in u.groups.all %}
+
+{% if g.name == "Administrador" %}
+<span class="badge bg-danger">Administrador</span>
+
+{% elif g.name == "Personal" %}
+<span class="badge bg-primary">Personal</span>
+
+{% elif g.name == "Paciente" %}
+<span class="badge bg-success">Paciente</span>
+
+{% else %}
+<span class="badge bg-secondary">{{ g.name }}</span>
+{% endif %}
+
+{% empty %}
+<span class="badge bg-dark">Sin rol</span>
+{% endfor %}
+</td>
+
+<td>
+{% if u.is_active %}
+<span class="badge bg-success">Activo</span>
+{% else %}
+<span class="badge bg-secondary">Inactivo</span>
+{% endif %}
+</td>
+
+<td>
+
+<a href="/administrador/reset/{{u.id}}/" class="btn btn-warning btn-sm">
+Reset
+</a>
+
+<a href="/administrador/toggle/{{u.id}}/" class="btn btn-secondary btn-sm">
+Activar / Desactivar
+</a>
+
+<a href="/administrador/eliminar/{{u.id}}/" class="btn btn-danger btn-sm">
+Eliminar
+</a>
+
+</td>
+
+</tr>
+{% endfor %}
+
+</table>

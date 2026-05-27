@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h3 class="mb-4">Expediente del Paciente</h3>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <div class="row">
+
+      <div class="col-md-6 mb-3">
+        <label class="fw-bold">Nombre</label>
+        <div>{{ paciente.nombre }}</div>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label class="fw-bold">Apellido</label>
+        <div>{{ paciente.apellido }}</div>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label class="fw-bold">Fecha nacimiento</label>
+        <div>{{ paciente.fecha_nacimiento }}</div>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label class="fw-bold">Telefono</label>
+        <div>{{ paciente.telefono }}</div>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label class="fw-bold">Correo</label>
+        <div>{{ paciente.correo }}</div>
+      </div>
+
+    </div>
+
+    <hr>
+
+    <div class="d-flex gap-2">
+      <a href="/pacientes/editar/{{ paciente.id }}/"
+         class="btn btn-warning">
+        Editar
+      </a>
+
+      <button
+        class="btn btn-danger"
+        id="btn-eliminar"
+        data-id="{{ paciente.id }}">
+        Eliminar
+      </button>
+
+      <a href="/pacientes/"
+         class="btn btn-secondary">
+        Volver
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<br>
+
+<!-- ============================ -->
+<!-- HISTORIAL DE CITAS -->
+<!-- ============================ -->
+
+<h5 class="mb-3">Historial de Citas</h5>
+
+<div class="card shadow-sm mb-4">
+<div class="card-body">
+
+<table class="table table-hover align-middle">
+
+<thead class="table-light">
+<tr>
+<th>Fecha</th>
+<th>Hora</th>
+<th>Doctor</th>
+<th>Motivo</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for cita in citas %}
+<tr>
+<td>{{ cita.fecha }}</td>
+<td>{{ cita.hora }}</td>
+<td>{{ cita.doctor }}</td>
+<td>{{ cita.motivo }}</td>
+</tr>
+{% empty %}
+<tr>
+<td colspan="4" class="text-center">
+Sin citas registradas
+</td>
+</tr>
+{% endfor %}
+
+</tbody>
+</table>
+
+</div>
+</div>
+
+
+<!-- ============================ -->
+<!-- RESULTADOS MEDICOS -->
+<!-- ============================ -->
+
+<h5 class="mb-3">Resultados Médicos</h5>
+
+<div class="card shadow-sm">
+<div class="card-body">
+
+<table class="table table-hover align-middle">
+
+<thead class="table-light">
+<tr>
+<th>Fecha</th>
+<th>Doctor</th>
+<th>Diagnóstico</th>
+<th>Acciones</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for r in resultados %}
+<tr>
+
+<td>{{ r.fecha }}</td>
+<td>{{ r.doctor }}</td>
+<td>{{ r.diagnostico }}</td>
+
+<td>
+
+<a href="/resultados/ver/{{ r.id }}/"
+class="btn btn-info btn-sm">
+<i class="bi bi-eye"></i>
+</a>
+
+<a href="/resultados/pdf/{{ r.id }}/"
+class="btn btn-secondary btn-sm">
+<i class="bi bi-file-earmark-pdf"></i>
+</a>
+
+</td>
+
+</tr>
+
+{% empty %}
+<tr>
+<td colspan="4" class="text-center">
+Sin resultados médicos
+</td>
+</tr>
+{% endfor %}
+
+</tbody>
+</table>
+
+</div>
+</div>
+
+
+<script>
+  document.getElementById('btn-eliminar').addEventListener('click', function () {
+    var id = this.getAttribute('data-id');
+    if (confirm("¿Seguro que deseas eliminar este paciente? Esta acción no se puede deshacer.")) {
+      window.location.href = "/pacientes/eliminar/" + id + "/";
+    }
+  });
+</script>
+
+{% endblock %}

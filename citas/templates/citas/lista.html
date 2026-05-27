@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h3 class="mb-4">Citas</h3>
+
+<!-- Tarjeta total -->
+<div class="card shadow-sm mb-4" style="max-width: 200px;">
+  <div class="card-body">
+    <h6 class="fw-bold">Total Citas</h6>
+    <h2 class="fw-bold">{{ citas|length }}</h2>
+  </div>
+</div>
+
+<!-- Buscador -->
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+<form method="get" class="d-flex gap-2">
+<input
+type="text"
+name="q"
+class="form-control"
+placeholder="🔍 Buscar paciente..."
+value="{{ request.GET.q }}"
+style="max-width:250px;">
+
+<button class="btn btn-outline-primary">
+Buscar
+</button>
+</form>
+
+<a href="/citas/nuevo/" class="btn btn-primary">
++ Nueva Cita
+</a>
+
+</div>
+
+<!-- Tabla -->
+<div class="card shadow-sm">
+<div class="card-body">
+
+<table class="table table-hover align-middle">
+
+<thead class="table-light">
+<tr>
+<th class="fw-normal">Paciente</th>
+<th class="fw-normal">Doctor</th>
+<th class="fw-normal">Fecha</th>
+<th class="fw-normal">Hora</th>
+<th class="fw-normal">Estado</th>
+<th class="fw-normal">Acciones</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for cita in citas %}
+<tr>
+
+<td>{{ cita.paciente }}</td>
+<td>{{ cita.doctor }}</td>
+<td>{{ cita.fecha }}</td>
+<td>{{ cita.hora }}</td>
+
+<td>
+{% if cita.estado == "Pendiente" %}
+<span class="badge bg-warning text-dark">Pendiente</span>
+
+{% elif cita.estado == "Confirmada" %}
+<span class="badge bg-success">Confirmada</span>
+
+{% elif cita.estado == "Cancelada" %}
+<span class="badge bg-danger">Cancelada</span>
+
+{% elif cita.estado == "Atendida" %}
+<span class="badge bg-primary">Atendida</span>
+{% endif %}
+</td>
+
+<td>
+
+<a href="/citas/ver/{{ cita.id }}/"
+class="btn btn-info btn-sm">
+<i class="bi bi-eye"></i>
+</a>
+
+<a href="/citas/editar/{{ cita.id }}/"
+class="btn btn-warning btn-sm">
+<i class="bi bi-pencil"></i>
+</a>
+
+<button
+class="btn btn-danger btn-sm eliminar-btn"
+data-id="{{ cita.id }}"
+data-nombre="{{ cita.paciente }}">
+<i class="bi bi-trash"></i>
+</button>
+
+</td>
+
+</tr>
+
+{% empty %}
+<tr>
+<td colspan="6" class="text-center">
+No hay citas registradas
+</td>
+</tr>
+{% endfor %}
+
+</tbody>
+</table>
+
+</div>
+</div>
+
+
+<!-- Modal eliminar -->
+<div class="modal fade" id="modalEliminar" tabindex="-1">
+<div class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+
+<div class="modal-header border-0 pb-0">
+<h5 class="modal-title fw-bold">Eliminar cita</h5>
+</div>
+
+<div class="modal-body">
+<hr class="mt-0">
+<p>
+¿Seguro que deseas eliminar la cita de 
+<strong id="nombreCita"></strong>?
+</p>
+</div>
+
+<div class="modal-footer border-0">
+
+<button
+class="btn btn-secondary"
+data-bs-dismiss="modal">
+Cancelar
+</button>
+
+<a
+id="btnConfirmarEliminar"
+class="btn btn-danger">
+Eliminar
+</a>
+
+</div>
+</div>
+</div>
+</div>
+
+
+<script>
+document.querySelectorAll('.eliminar-btn').forEach(function(btn){
+
+btn.addEventListener('click', function(){
+
+var id = this.dataset.id;
+var nombre = this.dataset.nombre;
+
+document.getElementById('nombreCita').textContent = nombre;
+
+document.getElementById('btnConfirmarEliminar').href =
+"/citas/eliminar/" + id + "/";
+
+var modal = new bootstrap.Modal(
+document.getElementById('modalEliminar')
+);
+
+modal.show();
+
+});
+
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends 'portal/base_portal.html' %}
+
+{% block content %}
+
+<h3 class="mb-4">Portal del Paciente</h3>
+
+<div class="alert alert-info">
+Si es tu primera vez tu contraseña es: <b>123456</b>
+</div>
+
+<div class="row">
+
+<div class="col-md-6">
+<div class="card-box">
+
+<h5>Mis datos</h5>
+<hr>
+
+<p><b>Nombre:</b> {{ paciente.nombre }}</p>
+<p><b>Apellido:</b> {{ paciente.apellido }}</p>
+<p><b>Teléfono:</b> {{ paciente.telefono }}</p>
+<p><b>Correo:</b> {{ paciente.correo }}</p>
+
+
+<p><b>Tipo de sangre:</b> {{ paciente.tipo_sangre }}</p>
+<p><b>Contacto emergencia:</b> {{ paciente.contacto_emergencia }}</p>
+
+<a href="/portal/pdf/" class="btn btn-main mt-2">
+Descargar PDF médico
+</a>
+
+<a href="/portal/citas/pdf/" class="btn btn-outline-primary mt-2">
+Descargar citas PDF
+</a>
+
+</div>
+</div>
+
+<div class="col-md-6">
+<div class="card-box">
+
+<h5>Próximas citas</h5>
+<hr>
+
+<table class="table">
+
+<tr>
+<th>Fecha</th>
+<th>Hora</th>
+<th>Doctor</th>
+</tr>
+
+{% for cita in citas %}
+<tr>
+<td>{{ cita.fecha }}</td>
+<td>{{ cita.hora }}</td>
+<td>{{ cita.doctor }}</td>
+</tr>
+{% empty %}
+<tr>
+<td colspan="3">No hay citas</td>
+</tr>
+{% endfor %}
+
+</table>
+
+</div>
+</div>
+
+<div class="col-md-12">
+<div class="card-box">
+
+<h5>Resultados</h5>
+<hr>
+
+<table class="table">
+
+<tr>
+<th>Fecha</th>
+<th>Doctor</th>
+<th>Acción</th>
+</tr>
+
+{% for r in resultados %}
+<tr>
+<td>{{ r.fecha }}</td>
+<td>{{ r.doctor }}</td>
+<td>
+<a href="/portal/pdf/" class="btn btn-main btn-sm">
+PDF
+</a>
+</td>
+</tr>
+{% empty %}
+<tr>
+<td colspan="3">Sin resultados</td>
+</tr>
+{% endfor %}
+
+</table>
+
+</div>
+</div>
+
+</div>
+
+{% endblock %}

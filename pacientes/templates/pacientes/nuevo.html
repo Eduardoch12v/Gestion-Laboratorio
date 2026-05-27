@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h4>Nuevo Paciente</h4>
+
+<div class="card p-4" style="max-width:600px;">
+
+<form method="POST">
+{% csrf_token %}
+
+<div class="mb-3">
+<label>Nombre</label>
+<input type="text" name="nombre" class="form-control"
+pattern="[A-Za-zÁÉÍÓÚáéíóúñÑ ]+" title="Solo letras" required>
+</div>
+
+<div class="mb-3">
+<label>Apellido</label>
+<input type="text" name="apellido" class="form-control"
+pattern="[A-Za-zÁÉÍÓÚáéíóúñÑ ]+" title="Solo letras" required>
+</div>
+
+<div class="mb-3">
+<label>Fecha nacimiento</label>
+<input type="date" name="fecha_nacimiento" class="form-control" required>
+</div>
+
+<div class="mb-3">
+<label>Telefono</label>
+<input type="text" name="telefono" class="form-control"
+pattern="[0-9]+" title="Solo números">
+</div>
+
+<div class="mb-3">
+<label>Correo</label>
+<input type="email" name="correo" class="form-control">
+</div>
+
+<div class="mb-3">
+<label>Tipo de sangre</label>
+<input type="text" name="tipo_sangre" class="form-control">
+</div>
+
+<div class="mb-3">
+<label>Contacto de emergencia</label>
+<input type="text" name="contacto_emergencia" class="form-control"
+pattern="[0-9]+" title="Solo números">
+</div>
+
+<button class="btn btn-success">Guardar</button>
+
+<a href="/pacientes/" class="btn btn-secondary">Cancelar</a>
+
+</form>
+
+</div>
+
+{% endblock %}

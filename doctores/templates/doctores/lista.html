@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h3 class="mb-4">Doctores</h3>
+
+<!-- Tarjeta de total -->
+<div class="card shadow-sm mb-4" style="max-width: 200px;">
+  <div class="card-body">
+    <h6 class="fw-bold">Total Doctores</h6>
+    <h2 class="fw-bold">{{ doctores|length }}</h2>
+  </div>
+</div>
+
+<!-- Buscador y botón nuevo -->
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <form method="get" class="d-flex gap-2">
+    <input
+      type="text"
+      name="q"
+      class="form-control"
+      placeholder="🔍 Buscar doctor..."
+      value="{{ request.GET.q }}"
+      style="max-width: 250px;">
+    <button type="submit" class="btn btn-outline-primary">Buscar</button>
+  </form>
+  <a href="/doctores/nuevo/" class="btn btn-primary">+ Nuevo Doctor</a>
+</div>
+
+<!-- Tabla -->
+<div class="card shadow-sm">
+  <div class="card-body">
+    <table class="table table-hover align-middle">
+      <thead class="table-light">
+        <tr>
+          <th class="fw-normal">Nombre</th>
+          <th class="fw-normal">Especialidad</th>
+          <th class="fw-normal">Telefono</th>
+          <th class="fw-normal">Consultorio</th>
+          <th class="fw-normal">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for doctor in doctores %}
+        <tr>
+          <td>{{ doctor.nombre }}</td>
+          <td>{{ doctor.especialidad }}</td>
+          <td>{{ doctor.telefono }}</td>
+          <td>{{ doctor.consultorio }}</td>
+          <td>
+            <a href="/doctores/ver/{{ doctor.id }}/"
+               class="btn btn-info btn-sm">
+              <i class="bi bi-eye"></i>
+            </a>
+            <a href="/doctores/editar/{{ doctor.id }}/"
+               class="btn btn-warning btn-sm">
+              <i class="bi bi-pencil"></i>
+            </a>
+            <button
+              class="btn btn-danger btn-sm eliminar-btn"
+              data-id="{{ doctor.id }}"
+              data-nombre="{{ doctor.nombre }}">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="5" class="text-center">No hay doctores registrados</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal de confirmación -->
+<div class="modal fade" id="modalEliminar" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-bold">Eliminar doctor</h5>
+      </div>
+      <div class="modal-body">
+        <hr class="mt-0">
+        <p>¿Seguro que deseas eliminar a <strong id="nombreDoctor"></strong>?</p>
+      </div>
+      <div class="modal-footer border-0">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <a id="btnConfirmarEliminar" href="#" class="btn btn-danger">Eliminar</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.eliminar-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var id = this.getAttribute('data-id');
+      var nombre = this.getAttribute('data-nombre');
+
+      document.getElementById('nombreDoctor').textContent = nombre;
+      document.getElementById('btnConfirmarEliminar').href = '/doctores/eliminar/' + id + '/';
+
+      var modal = new bootstrap.Modal(document.getElementById('modalEliminar'));
+      modal.show();
+    });
+  });
+</script>
+
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h3 class="mb-4">Nueva Cita</h3>
+
+<div class="card shadow-sm">
+<div class="card-body">
+
+<form method="POST">
+{% csrf_token %}
+
+<div class="row">
+
+<div class="col-md-6 mb-3">
+<label>Paciente</label>
+<select name="paciente" class="form-control">
+{% for p in pacientes %}
+<option value="{{ p.id }}">{{ p.nombre }}</option>
+{% endfor %}
+</select>
+</div>
+
+<div class="col-md-6 mb-3">
+<label>Doctor</label>
+<select name="doctor" class="form-control">
+{% for d in doctores %}
+<option value="{{ d.id }}">{{ d.nombre }}</option>
+{% endfor %}
+</select>
+</div>
+
+<div class="col-md-6 mb-3">
+<label>Fecha</label>
+<input type="date" name="fecha" class="form-control">
+</div>
+
+<div class="col-md-6 mb-3">
+<label>Hora</label>
+<input type="time" name="hora" class="form-control">
+</div>
+
+<div class="col-12 mb-3">
+<label>Motivo</label>
+<input type="text" name="motivo" class="form-control">
+</div>
+
+</div>
+
+<button class="btn btn-primary">
+Guardar
+</button>
+
+<a href="/citas/" class="btn btn-secondary">
+Volver
+</a>
+
+</form>
+
+</div>
+</div>
+
+{% endblock %}

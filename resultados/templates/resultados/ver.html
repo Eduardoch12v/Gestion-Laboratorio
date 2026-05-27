@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h3 class="mb-4">Resultado Médico</h3>
+
+<div class="card shadow-sm">
+<div class="card-body">
+
+<p><strong>Paciente:</strong> {{ resultado.paciente }}</p>
+<p><strong>Doctor:</strong> {{ resultado.doctor }}</p>
+<p><strong>Fecha:</strong> {{ resultado.fecha }}</p>
+
+<hr>
+
+<p><strong>Diagnóstico:</strong></p>
+<p>{{ resultado.diagnostico }}</p>
+
+<p><strong>Observaciones:</strong></p>
+<p>{{ resultado.observaciones }}</p>
+
+<hr>
+
+<div class="d-flex gap-2">
+
+<a href="/resultados/pdf/{{ resultado.id }}/"
+class="btn btn-dark">
+Descargar PDF
+</a>
+
+<a href="/resultados/editar/{{ resultado.id }}/"
+class="btn btn-warning">
+Editar
+</a>
+
+<a href="/resultados/"
+class="btn btn-secondary">
+Volver
+</a>
+
+</div>
+
+</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h3 class="mb-4">Dashboard</h3>
+
+<div class="row mb-4">
+
+<div class="col-md-3">
+<div class="card shadow-sm border-start border-primary border-4">
+<div class="card-body">
+<h6 class="text-muted">Total Pacientes</h6>
+<h3>{{ total_pacientes }}</h3>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card shadow-sm border-start border-success border-4">
+<div class="card-body">
+<h6 class="text-muted">Total Doctores</h6>
+<h3>{{ total_doctores }}</h3>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card shadow-sm border-start border-warning border-4">
+<div class="card-body">
+<h6 class="text-muted">Citas Hoy</h6>
+<h3>{{ citas_hoy }}</h3>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card shadow-sm border-start border-danger border-4">
+<div class="card-body">
+<h6 class="text-muted">Resultados</h6>
+<h3>{{ total_resultados }}</h3>
+</div>
+</div>
+</div>
+
+</div>
+
+<div class="row">
+
+<div class="col-md-6">
+
+<div class="card shadow-sm">
+<div class="card-body">
+
+<h5>Citas de hoy</h5>
+
+<table class="table table-sm">
+<thead>
+<tr>
+<th>Paciente</th>
+<th>Doctor</th>
+<th>Hora</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for c in citas %}
+<tr>
+<td>{{ c.paciente.nombre }}</td>
+<td>{{ c.doctor.nombre }}</td>
+<td>{{ c.hora|time:"H:i" }}</td>
+</tr>
+{% empty %}
+<tr>
+<td colspan="3" class="text-center">
+No hay citas hoy
+</td>
+</tr>
+{% endfor %}
+
+</tbody>
+</table>
+
+</div>
+</div>
+
+</div>
+
+<div class="col-md-6">
+
+<div class="card shadow-sm">
+<div class="card-body">
+
+<h5>Últimos resultados</h5>
+
+<table class="table table-sm">
+<thead>
+<tr>
+<th>Paciente</th>
+<th>Doctor</th>
+<th>Fecha</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for r in resultados %}
+<tr>
+<td>{{ r.paciente.nombre }}</td>
+<td>{{ r.cita.doctor.nombre }}</td>
+<td>{{ r.cita.fecha|date:"d/m/Y" }}</td>
+</tr>
+{% empty %}
+<tr>
+<td colspan="3" class="text-center">
+Sin resultados
+</td>
+</tr>
+{% endfor %}
+
+</tbody>
+</table>
+
+</div>
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}
